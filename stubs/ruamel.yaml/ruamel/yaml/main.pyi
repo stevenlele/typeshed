@@ -3,8 +3,8 @@ from collections.abc import Callable, Iterable, Iterator, Sequence
 from pathlib import Path
 from re import Pattern
 from types import ModuleType, TracebackType
-from typing import Any, ClassVar, Final, Literal, NoReturn, Protocol, TypeVar, overload, type_check_only
-from typing_extensions import Self, TypeAlias, deprecated
+from typing import Any, ClassVar, Final, Literal, NoReturn, Protocol, TypeAlias, TypeVar, overload, type_check_only
+from typing_extensions import Self, deprecated
 
 from _ruamel_yaml import CEmitter, CParser
 
@@ -83,6 +83,7 @@ class YAML:
     scalar_after_indicator: bool | None
     brace_single_entry_mapping_in_flow_sequence: bool
     boolean_representation: Sequence[str]
+
     @overload
     def __new__(
         cls,
@@ -110,6 +111,7 @@ class YAML:
         output: Path | _WriteStream | None = None,
         plug_ins: list[str] | None = None,
     ) -> Self: ...
+
     # This redundant overload prevents type checkers from matching the deprecated "unsafe" overload
     # when users are typing `YAML(typ=)`.
     @overload
@@ -140,6 +142,7 @@ class YAML:
         output: Path | _WriteStream | None = None,
         plug_ins: list[str] | None = None,
     ) -> None: ...
+
     @property
     def reader(self) -> _Reader: ...
     @property
@@ -166,7 +169,7 @@ class YAML:
     def load_all(self, stream: Path | _ReadStream) -> Iterator[Any]: ...
     def get_constructor_parser(self, stream: _ReadStream) -> tuple[BaseConstructor, _Parser | CParser]: ...
     def emit(self, events: Iterable[Event], stream: _WriteStream) -> None: ...
-    # copilot: main.py permits stream=None for serialize APIs and for context-managed dump(), while dump_all still requires a stream.
+    # copilot: main.py permits stream=None for serialize APIs and context-managed dump().
     def serialize(self, node: Node, stream: _WriteStream | None = None) -> None: ...
     def serialize_all(self, nodes: Iterable[Node], stream: _WriteStream | None = None) -> None: ...
     def dump(
@@ -181,37 +184,45 @@ class YAML:
     def get_serializer_representer_emitter(
         self, stream: _WriteStream, tlca: int | None
     ) -> tuple[_Serializer, BaseRepresenter, _Emitter | CEmitter]: ...
+
     @overload
     def map(self) -> dict[Any, Any]: ...
     @overload
     def map(self, **kw: _T) -> dict[str, _T]: ...
+
     @overload
     def seq(self) -> list[Any]: ...
     @overload
     def seq(self, iterable: Iterable[_T], /) -> list[_T]: ...
+
     def official_plug_ins(self) -> list[str]: ...
     def register_class(self, cls: _RegistrableClass) -> _RegistrableClass: ...
     def __enter__(self) -> _YAMLContext: ...
     def __exit__(self, typ: type[BaseException] | None, value: BaseException | None, traceback: TracebackType | None) -> None: ...
+
     @property
     def version(self) -> _VersionTuple | None: ...
     @version.setter
     def version(self, val: VersionType) -> None: ...
+
     @property
     def tags(self) -> _TagHandleToPrefix | None: ...
     @tags.setter
     def tags(self, val: _TagHandleToPrefix | None) -> None: ...
+
     @property
     def indent(self) -> _IndentSetter: ...
     @indent.setter
     def indent(self, val: int | None) -> None: ...
+
     @property
     def block_seq_indent(self) -> int: ...
     @block_seq_indent.setter
     def block_seq_indent(self, val: int) -> None: ...
+
     def compact(self, seq_seq: bool | None = None, seq_map: bool | None = None) -> None: ...
 
-# copilot: _IndentSetter describes the callable property implemented by YAML._indent and is not a runtime class.
+# copilot: _IndentSetter describes YAML._indent's callable property and is not a runtime class.
 @type_check_only
 class _IndentSetter(Protocol):
     def __call__(self, mapping: int | None = None, sequence: int | None = None, offset: int | None = None) -> None: ...
@@ -224,14 +235,17 @@ class _RoundTripYAML(YAML):
     Scanner: type[RoundTripScanner]
     Emitter: type[RoundTripEmitter]
     Parser: type[RoundTripParser]
+
     @overload
     def map(self) -> CommentedMap[Any, Any]: ...
     @overload
     def map(self, **kw: _T) -> CommentedMap[str, _T]: ...
+
     @overload
     def seq(self) -> CommentedSeq[Any]: ...
     @overload
     def seq(self, iterable: Iterable[_T], /) -> CommentedSeq[_T]: ...
+
     def __enter__(self) -> _RoundTripYAMLContext: ...
 
 @type_check_only
@@ -258,10 +272,8 @@ class _FullYAML(YAML):
 
 @type_check_only
 class _YAMLContext(YAML):
+    # copilot: main.py routes context-managed dump() through YAMLContextManager and rejects transform.
     def dump(self, data: Any, stream: Unused = None, *, transform: None = None) -> None: ...  # type: ignore[override]
-    def dump_all(
-        self, documents: Iterable[Any], stream: Unused = None, *, transform: None = None
-    ) -> None: ...  # type: ignore[override]
 
 @type_check_only
 class _RoundTripYAMLContext(_YAMLContext, _RoundTripYAML): ...
@@ -317,13 +329,9 @@ def safe_load(stream: _ReadStream, version: VersionType = None) -> NoReturn: ...
 @deprecated("Use YAML(typ='safe', pure=True).load_all() instead")
 def safe_load_all(stream: _ReadStream, version: VersionType = None) -> NoReturn: ...
 @deprecated("Use YAML().load() instead")
-def round_trip_load(
-    stream: _ReadStream, version: VersionType = None, preserve_quotes: bool | None = None
-) -> NoReturn: ...
+def round_trip_load(stream: _ReadStream, version: VersionType = None, preserve_quotes: bool | None = None) -> NoReturn: ...
 @deprecated("Use YAML().load_all() instead")
-def round_trip_load_all(
-    stream: _ReadStream, version: VersionType = None, preserve_quotes: bool | None = None
-) -> NoReturn: ...
+def round_trip_load_all(stream: _ReadStream, version: VersionType = None, preserve_quotes: bool | None = None) -> NoReturn: ...
 @deprecated("Use YAML(typ='safe', pure=True).emit() instead")
 def emit(
     events: Iterable[Event],
@@ -352,9 +360,7 @@ def serialize_all(
     tags: _TagHandleToPrefix | None = None,
 ) -> NoReturn: ...
 @deprecated("Use YAML(typ='safe', pure=True).serialize() instead")
-def serialize(
-    node: Node, stream: _WriteStream | None = None, Dumper: type[BaseDumper] = ..., **kwds: object
-) -> NoReturn: ...
+def serialize(node: Node, stream: _WriteStream | None = None, Dumper: type[BaseDumper] = ..., **kwds: object) -> NoReturn: ...
 @deprecated("Use YAML(typ='unsafe', pure=True).dump_all() instead")
 def dump_all(
     documents: Iterable[Any],
@@ -434,6 +440,7 @@ def add_path_resolver(
     Dumper: type[BaseResolver] | None = None,
     resolver: type[BaseResolver] = ...,
 ) -> None: ...
+
 @overload
 def add_constructor(
     tag: Tag | str | None, object_constructor: _ConstructorFunction[_Constructor], *, constructor: type[_Constructor]
@@ -444,6 +451,7 @@ def add_constructor(
 ) -> None: ...
 @overload
 def add_constructor(tag: Tag | str | None, object_constructor: _ConstructorFunction[Constructor]) -> None: ...
+
 @overload
 def add_multi_constructor(
     tag_prefix: str | None, multi_constructor: _MultiConstructorFunction[_Constructor], *, constructor: type[_Constructor]
@@ -454,6 +462,7 @@ def add_multi_constructor(
 ) -> None: ...
 @overload
 def add_multi_constructor(tag_prefix: str | None, multi_constructor: _MultiConstructorFunction[Constructor]) -> None: ...
+
 @overload
 def add_representer(
     data_type: type[_T] | None, object_representer: _RepresenterFunction[_Representer, _T], *, representer: type[_Representer]
@@ -464,6 +473,7 @@ def add_representer(
 ) -> None: ...
 @overload
 def add_representer(data_type: type[_T] | None, object_representer: _RepresenterFunction[Representer, _T]) -> None: ...
+
 @overload
 def add_multi_representer(
     data_type: type[_T] | None, multi_representer: _RepresenterFunction[_Representer, _T], *, representer: type[_Representer]

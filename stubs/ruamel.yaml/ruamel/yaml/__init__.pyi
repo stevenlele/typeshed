@@ -1,3 +1,5 @@
+from typing import Final
+
 from .comments import CommentedMap as CommentedMap, CommentedSeq as CommentedSeq
 from .constructor import *
 from .cyaml import *

@@ -3,7 +3,10 @@ from collections.abc import Callable, Iterator
 from datetime import date, datetime
 from typing import Any, Final
 
-from configobj import ConfigObj  # type: ignore[import-not-found]  # pyright: ignore[reportMissingImports]
+# copilot: configobj is an optional runtime dependency listed for stubtest, not a typing dependency.
+from configobj import (
+    ConfigObj,  # type: ignore[import-not-found]  # pyright: ignore[reportMissingImports]  # ty:ignore[unresolved-import]  # pyrefly: ignore [missing-import]
+)
 
 from .compat import _ReadStream
 

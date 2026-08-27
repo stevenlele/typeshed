@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, tzinfo
-from typing import Literal
+from typing import Literal, SupportsIndex
 from typing_extensions import Self
 
 class TimeStamp(datetime):
@@ -35,14 +35,13 @@ class TimeStamp(datetime):
     # copilot: timestamp.py uses None as a preserve-current sentinel and True to preserve tzinfo in replace().
     def replace(
         self,
-        year: int | None = None,
-        month: int | None = None,
-        day: int | None = None,
-        hour: int | None = None,
-        minute: int | None = None,
-        second: int | None = None,
-        microsecond: int | None = None,
+        year: SupportsIndex | None = None,
+        month: SupportsIndex | None = None,
+        day: SupportsIndex | None = None,
+        hour: SupportsIndex | None = None,
+        minute: SupportsIndex | None = None,
+        second: SupportsIndex | None = None,
+        microsecond: SupportsIndex | None = None,
         tzinfo: tzinfo | Literal[True] | None = True,
         fold: int | None = None,
-    ) -> Self: ...
-    def __str__(self) -> str: ...
+    ) -> Self: ...  # type: ignore[override]

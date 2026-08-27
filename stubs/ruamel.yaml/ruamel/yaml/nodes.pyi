@@ -1,5 +1,4 @@
-from typing import Any, ClassVar, Literal
-from typing_extensions import TypeAlias
+from typing import Any, ClassVar, Literal, TypeAlias
 
 from .anchor import Anchor
 from .error import _Mark
@@ -26,10 +25,12 @@ class Node:
         comment: _CommentGroup | None = None,
         anchor: Anchor | str | None = None,
     ) -> None: ...
+
     @property
     def tag(self) -> str | None: ...
     @tag.setter
     def tag(self, val: Tag | str | None, /) -> None: ...
+
     def dump(self, *, indent: int = 0) -> None: ...
 
 class ScalarNode(Node):

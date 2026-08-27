@@ -16,7 +16,8 @@ class ParserError(MarkedYAMLError): ...
 
 class Parser:
     DEFAULT_TAGS: Final[_TagHandleToPrefix]
-    loader: YAML | _Loader
+    # copilot: parser.py stores its constructor argument unchanged, and the mixin loaders may initialize it as None.
+    loader: YAML | _Loader | None
     def __init__(self, loader: YAML | _Loader) -> None: ...
     current_event: Event | None
     last_event: Event | None
