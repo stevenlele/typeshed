@@ -1,4 +1,4 @@
-version = "0.18.*"
+version = "0.19.*"
 upstream_repository = "https://sourceforge.net/p/ruamel-yaml/code/"
 
 [tool.stubtest]

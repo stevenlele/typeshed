@@ -16,13 +16,13 @@ class Node:
     end_mark: _Mark | None
     comment: _CommentGroup | None
     anchor: Anchor | str | None
+    # copilot: nodes.py declares comment and anchor as ordinary positional-or-keyword parameters.
     def __init__(
         self,
         tag: Tag | str | None,
         value: Any,
         start_mark: _Mark | None,
         end_mark: _Mark | None,
-        *,
         comment: _CommentGroup | None = None,
         anchor: Anchor | str | None = None,
     ) -> None: ...
@@ -36,13 +36,13 @@ class ScalarNode(Node):
     id: ClassVar[Literal["scalar"]]
     value: str
     style: _ScalarNodeStyle | None
+    # copilot: ScalarNode forwards style, comment, and anchor to the runtime constructor without keyword-only enforcement.
     def __init__(
         self,
         tag: Tag | str | None,
         value: str,
         start_mark: _Mark | None = None,
         end_mark: _Mark | None = None,
-        *,
         style: _ScalarNodeStyle | None = None,
         comment: _CommentGroup | None = None,
         anchor: Anchor | str | None = None,
@@ -51,13 +51,13 @@ class ScalarNode(Node):
 class CollectionNode(Node):
     value: list[Any]
     flow_style: bool | None
+    # copilot: CollectionNode's implementation accepts flow_style, comment, and anchor positionally.
     def __init__(
         self,
         tag: Tag | str | None,
         value: list[Any],
         start_mark: _Mark | None = None,
         end_mark: _Mark | None = None,
-        *,
         flow_style: bool | None = None,
         comment: _CommentGroup | None = None,
         anchor: Anchor | str | None = None,
@@ -82,13 +82,13 @@ class MappingNode(CollectionNode):
     id: ClassVar[Literal["mapping"]]
     value: list[tuple[Node, Node]]
     merge: list[tuple[Node, Node]] | None
+    # copilot: MappingNode inherits the positional CollectionNode constructor and adds no keyword-only boundary.
     def __init__(
         self,
         tag: Tag | str | None,
         value: list[tuple[Node, Node]],
         start_mark: _Mark | None = None,
         end_mark: _Mark | None = None,
-        *,
         flow_style: bool | None = None,
         comment: _CommentGroup | None = None,
         anchor: Anchor | str | None = None,

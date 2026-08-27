@@ -6,14 +6,19 @@ from .nodes import CollectionNode, MappingNode, Node, ScalarNode, SequenceNode
 from .parser import Parser
 from .resolver import BaseResolver
 
-__all__ = ["Composer", "ComposerError"]
+__all__ = ["Composer", "ComposerError", "MaxDepthExceededError"]
 
 class ComposerError(MarkedYAMLError): ...
+
+# copilot: composer.py raises this concrete error when YAML.max_depth is exceeded while composing nested nodes.
+class MaxDepthExceededError(MarkedYAMLError): ...
 
 class Composer:
     loader: YAML | _Loader | None
     anchors: dict[str, Node]
     warn_double_anchors: bool
+    # copilot: composer.py increments this counter for each nested node and compares it with YAML.max_depth.
+    depth: int
     def __init__(self, loader: YAML | _Loader | None = None) -> None: ...
     @property
     def parser(self) -> Parser: ...

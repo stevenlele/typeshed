@@ -10,8 +10,9 @@ class Tag:
     handle: str | None
     suffix: str | None
     handles: _TagHandleToPrefix | None
+    # copilot: tag.py accepts all three constructor fields positionally or by keyword with None defaults.
     def __init__(
-        self, *, handle: str | None = None, suffix: str | None = None, handles: _TagHandleToPrefix | None = None
+        self, handle: str | None = None, suffix: str | None = None, handles: _TagHandleToPrefix | None = None
     ) -> None: ...
     def __hash__(self) -> int: ...
     def __eq__(self, other: Tag | str, /) -> bool: ...  # type: ignore[override]

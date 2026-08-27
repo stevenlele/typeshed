@@ -52,6 +52,8 @@ class YAML:
     Serializer: type[Serializer] | None
     default_flow_style: bool | None
     comment_handling: int | None
+    # copilot: main.py initializes max_depth to zero and Composer uses it to limit nested composition.
+    max_depth: int
     Emitter: type[Emitter | CEmitter]
     Parser: type[Parser | CParser]
     Composer: type[Composer]
