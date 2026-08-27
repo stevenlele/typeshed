@@ -10,8 +10,8 @@ rebase or history rewrite was performed.
 The latest upstream release available during the refresh was `ruamel.yaml
 0.19.1`. Its supported Python versions include the versions supported by the
 current typeshed layout, so the metadata was updated from `0.18.*` to `0.19.*`.
-The current metadata validator requires the hyphenated keys
-`upstream-repository` and `stubtest-dependencies`.
+The current metadata validator requires the keys `upstream_repository` and
+`stubtest_requirements`.
 
 ## Maintainer feedback and stub-writing guidance
 
