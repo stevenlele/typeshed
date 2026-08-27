@@ -2,7 +2,7 @@ from collections.abc import Generator, Iterable, Iterator, Mapping, Set as Abstr
 from datetime import date, datetime
 from re import Pattern
 from types import ModuleType
-from typing import Any, ClassVar, Final, NoReturn, Protocol, TypeVar, overload
+from typing import Any, ClassVar, Final, NoReturn, Protocol, TypeVar, overload, type_check_only
 from typing_extensions import Self
 
 from .comments import CommentedMap, CommentedOrderedMap, CommentedSeq, CommentedSet, TaggedScalar
@@ -24,9 +24,12 @@ __all__ = ["BaseConstructor", "SafeConstructor", "Constructor", "ConstructorErro
 _T = TypeVar("_T")
 _Constructor = TypeVar("_Constructor", bound=BaseConstructor, contravariant=True)
 
+# copilot: constructor.py stores these callbacks without defining protocol classes, so they are type-check-only shapes.
+@type_check_only
 class _ConstructorFunction(Protocol[_Constructor]):
     def __call__(self, loader: _Constructor, node: Node, /) -> Any: ...
 
+@type_check_only
 class _MultiConstructorFunction(Protocol[_Constructor]):
     def __call__(self, loader: _Constructor, tag_suffix: str, node: Node, /) -> Any: ...
 

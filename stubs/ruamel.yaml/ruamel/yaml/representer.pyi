@@ -3,7 +3,7 @@ from collections import OrderedDict
 from collections.abc import Collection, Mapping, Set as AbstractSet
 from datetime import date, datetime
 from types import ModuleType
-from typing import Any, ClassVar, Final, NoReturn, Protocol, TypeVar
+from typing import Any, ClassVar, Final, NoReturn, Protocol, TypeVar, type_check_only
 from typing_extensions import Self
 
 from .anchor import Anchor
@@ -33,6 +33,8 @@ _T = TypeVar("_T")
 _T_contra = TypeVar("_T_contra", contravariant=True)
 _Representer = TypeVar("_Representer", bound=BaseRepresenter, contravariant=True)
 
+# copilot: this callable protocol replaces the unannotated callback shape in representer.py and is absent at runtime.
+@type_check_only
 class _RepresenterFunction(Protocol[_Representer, _T_contra]):
     def __call__(self, dumper: _Representer, data: _T_contra, /) -> Node: ...
 
