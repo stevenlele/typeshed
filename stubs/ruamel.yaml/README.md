@@ -56,10 +56,17 @@ upstream package's `main.py`.
 
 Before the local commits were lost, the replayed implementation passed
 typeshed structure validation, targeted mypy validation, targeted Pyright
-validation, and targeted pre-commit checks. The same checks are being rerun
-after replay where the required tools are available.
+validation, and targeted pre-commit checks. After replay, the same checks
+passed again:
 
-In this environment, the initial rerun attempts were blocked by missing
-`tomli` (structure validation) and missing `pre-commit`. `ty` and `pyrefly`
-were unavailable. CodeQL previously timed out twice against the large rebased
-diff; the replay will be checked again against the smaller change set.
+* structure validation passed;
+* targeted mypy passed for all six supported Python versions (`192` files);
+* targeted Pyright passed with `0` errors, warnings, or informations; and
+* targeted pre-commit checks passed.
+
+The initial rerun attempts in the base environment were blocked by missing
+`tomli`, `pathspec`, and `pre-commit`; the existing test requirements were
+installed in `/tmp` without changing the repository. `ty` and `pyrefly` were
+unavailable. Secret scanning found no secrets. CodeQL reported that these stub
+and metadata files contain no analyzable languages, so no CodeQL analysis was
+performed.
