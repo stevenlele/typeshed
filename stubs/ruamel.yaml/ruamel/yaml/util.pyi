@@ -3,7 +3,7 @@ from collections.abc import Callable, Iterator
 from datetime import date, datetime
 from typing import Any, Final
 
-from configobj import ConfigObj  # type: ignore[import-not-found]  # pyright: ignore[reportMissingImports]
+from configobj import ConfigObj  # type: ignore[import-not-found]  # pyright: ignore[reportMissingTypeStubs]
 
 from .compat import _ReadStream
 
@@ -30,5 +30,5 @@ def create_timestamp(
     tz_hour: str | None,
     tz_minute: str | None,
 ) -> date | datetime: ...
-def load_yaml_guess_indent(stream: _ReadStream, /) -> tuple[Any, int | None, int | None]: ...
+def load_yaml_guess_indent(stream: _ReadStream, /, **kw: Any) -> tuple[Any, int | None, int | None]: ...
 def configobj_walker(cfg: ConfigObj, /) -> Iterator[str]: ...

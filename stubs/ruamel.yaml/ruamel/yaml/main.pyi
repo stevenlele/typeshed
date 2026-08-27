@@ -52,6 +52,7 @@ class YAML:
     Serializer: type[Serializer] | None
     default_flow_style: bool | None
     comment_handling: int | None
+    max_depth: int
     Emitter: type[Emitter | CEmitter]
     Parser: type[Parser | CParser]
     Composer: type[Composer]

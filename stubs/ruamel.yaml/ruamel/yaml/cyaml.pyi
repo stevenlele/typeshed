@@ -1,8 +1,9 @@
 from _typeshed import Unused
+from typing import Literal
 
 from _ruamel_yaml import CEmitter, CParser
 
-from .compat import _ReadStream, _WriteStream
+from .compat import VersionType, _ReadStream, _WriteStream
 from .constructor import BaseConstructor, Constructor, SafeConstructor
 from .emitter import _LineBreak
 from .representer import BaseRepresenter, Representer, SafeRepresenter
@@ -10,16 +11,18 @@ from .resolver import BaseResolver, Resolver
 from .tag import _TagHandleToPrefix
 from .tokens import _ScalarStyle, _VersionTuple
 
-__all__ = ["CBaseLoader", "CSafeLoader", "CLoader", "CBaseDumper", "CSafeDumper", "CDumper"]
+__all__ = ["CBaseLoader", "CSafeLoader", "CLoader", "CBaseDumper", "CSafeDumper", "CDumper", "__yaml_lib"]
+
+__yaml_lib: Literal["clib", "clibz"]
 
 class CBaseLoader(CParser, BaseConstructor, BaseResolver):
-    def __init__(self, stream: _ReadStream, version: Unused = None, preserve_quotes: Unused = None) -> None: ...
+    def __init__(self, stream: _ReadStream, version: VersionType = None, preserve_quotes: bool | None = None) -> None: ...
 
 class CSafeLoader(CParser, SafeConstructor, Resolver):
-    def __init__(self, stream: _ReadStream, version: Unused = None, preserve_quotes: Unused = None) -> None: ...
+    def __init__(self, stream: _ReadStream, version: VersionType = None, preserve_quotes: bool | None = None) -> None: ...
 
 class CLoader(CParser, Constructor, Resolver):
-    def __init__(self, stream: _ReadStream, version: Unused = None, preserve_quotes: Unused = None) -> None: ...
+    def __init__(self, stream: _ReadStream, version: VersionType = None, preserve_quotes: bool | None = None) -> None: ...
 
 class CBaseDumper(CEmitter, BaseRepresenter, BaseResolver):
     def __init__(

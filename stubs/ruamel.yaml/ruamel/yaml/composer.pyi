@@ -6,13 +6,15 @@ from .nodes import CollectionNode, MappingNode, Node, ScalarNode, SequenceNode
 from .parser import Parser
 from .resolver import BaseResolver
 
-__all__ = ["Composer", "ComposerError"]
+__all__ = ["Composer", "ComposerError", "MaxDepthExceededError"]
 
 class ComposerError(MarkedYAMLError): ...
+class MaxDepthExceededError(MarkedYAMLError): ...
 
 class Composer:
     loader: YAML | _Loader | None
     anchors: dict[str, Node]
+    depth: int
     warn_double_anchors: bool
     def __init__(self, loader: YAML | _Loader | None = None) -> None: ...
     @property
